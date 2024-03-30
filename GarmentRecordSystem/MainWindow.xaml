@@ -95,7 +95,7 @@
 
         <!-- Footer -->
         <Border Grid.Row="2" Background="LightGray">
-            <TextBlock Text="Copyright © 2024 GameRecordSystem" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="Copyright © 2024 GarmentRecordSystem" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
     </Grid>
 </Window>

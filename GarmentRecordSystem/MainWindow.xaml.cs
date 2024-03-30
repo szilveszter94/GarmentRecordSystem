@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,14 @@ namespace GarmentRecordSystem
         public ObservableCollection<GarmentModel> Garments { get; set; }
         private IGarmentService _garmentService;
         private string _filePath;
+        private Dictionary<string, bool> sortFlags = new Dictionary<string, bool>
+        {
+            { "GarmentId", false },
+            { "BrandName", false },
+            { "Color", false },
+            { "PurchaseDate", false },
+            { "Size", false }
+        };
         public MainWindow()
         {
             var location = AppDomain.CurrentDomain.BaseDirectory;
@@ -58,6 +67,48 @@ namespace GarmentRecordSystem
                     Garments.Add(garment);
                 }
                 MessageBox.Show("Item successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void SortGarments(object sender, RoutedEventArgs e)
+        {
+            var key = (string)((TextBlock)sender).Tag;
+            bool isAscending = !sortFlags[key];
+            sortFlags[key] = isAscending;
+
+            Garments.Clear();
+            IEnumerable<GarmentModel> sortedGarments;
+
+            switch (key)
+            {
+                case "GarmentId":
+                    sortedGarments = _garmentService.GetAll().OrderBy(g => g.GarmentId);
+                    break;
+                case "BrandName":
+                    sortedGarments = _garmentService.GetAll().OrderBy(g => g.BrandName, StringComparer.CurrentCultureIgnoreCase);
+                    break;
+                case "Color":
+                    sortedGarments = _garmentService.GetAll().OrderBy(g => g.Color, StringComparer.CurrentCultureIgnoreCase);
+                    break;
+                case "Size":
+                    sortedGarments = _garmentService.GetAll().OrderBy(g => g.Size);
+                    break;
+                case "PurchaseDate":
+                    Console.WriteLine("ok");
+                    sortedGarments = _garmentService.GetAll().OrderBy(g => g.PurchaseDate);
+                    break;
+                default:
+                    return;
+            }
+
+            if (!isAscending)
+            {
+                sortedGarments = sortedGarments.Reverse();
+            }
+
+            foreach (var garment in sortedGarments)
+            {
+                Garments.Add(garment);
             }
         }
 

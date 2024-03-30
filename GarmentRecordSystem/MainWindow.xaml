@@ -54,11 +54,11 @@
                         <ColumnDefinition Width="150"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="ID" FontWeight="Bold" Tag="GarmentId"/>
-                    <TextBlock Grid.Column="1" Text="Brand" FontWeight="Bold" Tag="BrandName"/>
-                    <TextBlock Grid.Column="2" Text="Color" FontWeight="Bold" Tag="Color"/>
-                    <TextBlock Grid.Column="3" Text="Date" FontWeight="Bold" Tag="PurchaseDate"/>
-                    <TextBlock Grid.Column="4" Text="Size" FontWeight="Bold" Tag="Size"/>
+                    <TextBlock Grid.Column="0" Text="ID" FontWeight="Bold" MouseLeftButtonDown="SortGarments" Tag="GarmentId"/>
+                    <TextBlock Grid.Column="1" Text="Brand" FontWeight="Bold" MouseLeftButtonDown="SortGarments" Tag="BrandName"/>
+                    <TextBlock Grid.Column="2" Text="Color" FontWeight="Bold" MouseLeftButtonDown="SortGarments" Tag="Color"/>
+                    <TextBlock Grid.Column="3" Text="Date" FontWeight="Bold" MouseLeftButtonDown="SortGarments" Tag="PurchaseDate"/>
+                    <TextBlock Grid.Column="4" Text="Size" FontWeight="Bold" MouseLeftButtonDown="SortGarments" Tag="Size"/>
                 </Grid>
                 
                 <!-- ListBox with garments -->

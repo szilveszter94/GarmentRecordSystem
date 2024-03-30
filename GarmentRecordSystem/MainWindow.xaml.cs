@@ -41,6 +41,24 @@ namespace GarmentRecordSystem
             InitializeComponent();
         }
         
+        private void SaveGarments(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            
+            saveFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            saveFileDialog.FileName = "garments.json";
+            
+            bool? result = saveFileDialog.ShowDialog();
+            
+            if (result == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                _garmentService.SaveGarment(filePath);
+                MessageBox.Show($"Items successfully saved to the location {filePath}.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        
         private void AddNewGarment(object sender, RoutedEventArgs e)
         {
             var addWindow = new GarmentEditorWindow(_garmentService);

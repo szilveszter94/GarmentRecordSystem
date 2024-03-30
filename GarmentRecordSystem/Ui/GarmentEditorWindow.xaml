@@ -1,0 +1,43 @@
+<Window x:Class="GarmentRecordSystem.Ui.GarmentEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:GarmentRecordSystem.Models.Enums"
+        xmlns:extensions="clr-namespace:GarmentRecordSystem.Extensions"
+        Height="250" Width="280"
+        x:Name="EditorWindow"
+        Title="Garment creator"
+        VerticalAlignment="Center" ResizeMode="NoResize">
+    <Grid VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Width="10"/>
+        <Grid Grid.Column="1" Width="230">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock x:Name="EditorTitle" FontSize="18" Text="Add new Garment:" Margin="0 10 0 15" HorizontalAlignment="Center" Grid.Row="0" ></TextBlock>
+            
+            <Label Grid.Row="1" Content="Name:" Margin="5" HorizontalAlignment="Left"/>
+            <TextBox x:Name="NameTextBox" Grid.Row="1" FontSize="16" Margin="0 0 10 5" Width="120" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+            <Label Grid.Row="2" Content="Color:" Margin="5" HorizontalAlignment="Left"/>
+            <TextBox x:Name="ColorTextBox" Grid.Row="2" FontSize="16" Margin="0 0 10 5" Width="120" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            
+            <Label Grid.Row="3" Content="Size:" Margin="5" HorizontalAlignment="Left"/>
+            <ComboBox x:Name="SizeComboBox" Grid.Row="3" Margin="0 0 10 5" Width="120" HorizontalAlignment="Right"
+                      ItemsSource="{extensions:EnumToItemsSource {x:Type models:SizeEnum}}" DisplayMemberPath="DisplayName" SelectedValuePath="DisplayName" VerticalAlignment="Center"/>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                <Button Content="Save" Width="100" Margin="5"/>
+                <Button Content="Cancel" Width="100" Margin="5"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

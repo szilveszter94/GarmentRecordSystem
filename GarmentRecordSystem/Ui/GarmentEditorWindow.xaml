@@ -35,8 +35,8 @@
                       ItemsSource="{extensions:EnumToItemsSource {x:Type models:SizeEnum}}" DisplayMemberPath="DisplayName" SelectedValuePath="DisplayName" VerticalAlignment="Center"/>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                <Button Content="Save" Width="100" Margin="5"/>
-                <Button Content="Cancel" Width="100" Margin="5"/>
+                <Button Click="SaveGarment" Content="Save" Width="100" Margin="5"/>
+                <Button Click="CancelFromEditorWindow" Content="Cancel" Width="100" Margin="5"/>
             </StackPanel>
         </Grid>
     </Grid>

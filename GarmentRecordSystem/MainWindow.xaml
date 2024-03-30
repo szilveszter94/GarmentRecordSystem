@@ -3,10 +3,99 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GarmentRecordSystem"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="GarmentRecordSystem" Height="450" Width="1000">
     <Grid>
+        <!-- Define rows for header, content, and footer -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
 
+        <!-- Header -->
+        <Border BorderBrush="Gray" BorderThickness="0 0 0 1" Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <Button Width="70" Height="30" Margin="10">Add</Button>
+                <Button Width="70" Height="30" Margin="10">Save</Button>
+                <Button Width="70" Height="30" Margin="10">Load</Button>
+                <Grid>
+                    <TextBox  Width="250" Height="30" FontSize="18"  VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="SearchTermTextBox" Margin="5"/>
+                    <TextBlock IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Content -->
+        <Border Grid.Row="1">
+            <Grid>
+                <!-- Column headers -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Row for column headers -->
+                    <RowDefinition Height="*"/>    <!-- Row for ListBox -->
+                </Grid.RowDefinitions>
+                
+                <Grid Margin="5 0 0 5" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ID" FontWeight="Bold" Tag="GarmentId"/>
+                    <TextBlock Grid.Column="1" Text="Brand" FontWeight="Bold" Tag="BrandName"/>
+                    <TextBlock Grid.Column="2" Text="Color" FontWeight="Bold" Tag="Color"/>
+                    <TextBlock Grid.Column="3" Text="Date" FontWeight="Bold" Tag="PurchaseDate"/>
+                    <TextBlock Grid.Column="4" Text="Size" FontWeight="Bold" Tag="Size"/>
+                </Grid>
+                
+                <!-- ListBox with garments -->
+                <ListBox Grid.Row="1" ItemsSource="{Binding Garments}" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0 0 0 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding GarmentId}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding BrandName}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Color}"/>
+                                <TextBlock Grid.Column="3">
+                                    <TextBlock.Text>
+                                        <Binding Path="PurchaseDate" StringFormat="yyyy.MM.dd HH:mm:ss" />
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Grid.Column="4" Text="{Binding Size}"/>
+                                <Button Grid.Column="5" Background="RoyalBlue" Foreground="White" Content="Update" Width="60" CommandParameter="{Binding GarmentId}"/>
+                                <Button Grid.Column="6" Background="Firebrick" Foreground="White" Content="Delete" Width="60" CommandParameter="{Binding GarmentId}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="LightGray">
+            <TextBlock Text="Copyright © 2024 GameRecordSystem" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
     </Grid>
 </Window>

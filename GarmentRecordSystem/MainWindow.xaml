@@ -16,7 +16,7 @@
         <!-- Header -->
         <Border BorderBrush="Gray" BorderThickness="0 0 0 1" Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button Width="70" Height="30" Margin="10">Add</Button>
+                <Button Click="AddNewGarment" Width="70" Height="30" Margin="10">Add</Button>
                 <Button Width="70" Height="30" Margin="10">Save</Button>
                 <Button Width="70" Height="30" Margin="10">Load</Button>
                 <Grid>

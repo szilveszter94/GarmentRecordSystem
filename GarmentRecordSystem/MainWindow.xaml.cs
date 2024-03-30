@@ -5,6 +5,7 @@ using System.Windows;
 using GarmentRecordSystem.Models;
 using GarmentRecordSystem.Repository;
 using GarmentRecordSystem.Service;
+using GarmentRecordSystem.Ui;
 
 namespace GarmentRecordSystem
 {
@@ -24,10 +25,15 @@ namespace GarmentRecordSystem
             var garmentRepository = new GarmentRepository(filePath);
             var garmentService = new GarmentService(garmentRepository);
             _garmentService = garmentService;
-            Garments = new ObservableCollection<GarmentModel>(_garmentService.GetAll()); 
-            InitializeComponent();
+            Garments = new ObservableCollection<GarmentModel>(_garmentService.GetAll());
             DataContext = this;
             InitializeComponent();
+        }
+        
+        private void AddNewGarment(object sender, RoutedEventArgs e)
+        {
+            var addWindow = new GarmentEditorWindow();
+            addWindow.ShowDialog();
         }
     }
 }

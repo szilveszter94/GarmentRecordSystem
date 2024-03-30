@@ -85,7 +85,7 @@
                                 </TextBlock>
                                 <TextBlock Grid.Column="4" Text="{Binding Size}"/>
                                 <Button Grid.Column="5" Background="RoyalBlue" Foreground="White" Content="Update" Width="60" Click="UpdateGarment" CommandParameter="{Binding GarmentId}"/>
-                                <Button Grid.Column="6" Background="Firebrick" Foreground="White" Content="Delete" Width="60" CommandParameter="{Binding GarmentId}"/>
+                                <Button Grid.Column="6" Background="Firebrick" Foreground="White" Content="Delete" Width="60" Click="DeleteGarment" CommandParameter="{Binding GarmentId}"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

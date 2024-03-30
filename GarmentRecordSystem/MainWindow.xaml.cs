@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GarmentRecordSystem.Models;
@@ -57,6 +58,21 @@ namespace GarmentRecordSystem
                     Garments.Add(garment);
                 }
                 MessageBox.Show("Item successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void DeleteGarment(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var garmentId = (int)((Button)sender).CommandParameter;
+                _garmentService.DeleteGarment(garmentId);
+                var garmentToRemove = Garments.FirstOrDefault(g => g.GarmentId == garmentId);
+                if (garmentToRemove != null)
+                {
+                    Garments.Remove(garmentToRemove);
+                }
             }
         }
     }

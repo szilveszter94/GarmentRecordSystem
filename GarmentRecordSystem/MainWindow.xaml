@@ -20,7 +20,7 @@
                 <Button Width="70" Height="30" Margin="10">Save</Button>
                 <Button Width="70" Height="30" Margin="10">Load</Button>
                 <Grid>
-                    <TextBox  Width="250" Height="30" FontSize="18"  VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="SearchTermTextBox" Margin="5"/>
+                    <TextBox  Width="250" Height="30" FontSize="18"  VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="SearchGarments" x:Name="SearchTermTextBox" Margin="5"/>
                     <TextBlock IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">

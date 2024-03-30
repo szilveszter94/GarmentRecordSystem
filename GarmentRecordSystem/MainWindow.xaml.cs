@@ -69,6 +69,25 @@ namespace GarmentRecordSystem
                 MessageBox.Show("Item successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+        
+        private void SearchGarments(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchTermTextBox.Text.ToLower();
+            Int32.TryParse(searchText, out int number);
+            Garments.Clear();
+            var filteredGarments = new List<GarmentModel>();
+            foreach (var garment in _garmentService.GetAll())
+            {
+                if (garment.BrandName.ToLower().Contains(searchText) || garment.Color.ToLower().Contains(searchText) || garment.GarmentId == number)
+                {
+                    filteredGarments.Add(garment);
+                }
+            }
+            foreach (var garment in filteredGarments)
+            {
+                Garments.Add(garment);
+            }
+        }
 
         private void SortGarments(object sender, RoutedEventArgs e)
         {

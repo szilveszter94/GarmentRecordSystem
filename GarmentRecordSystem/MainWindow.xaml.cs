@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using GarmentRecordSystem.Models;
 using GarmentRecordSystem.Repository;
 using GarmentRecordSystem.Service;
@@ -32,8 +33,31 @@ namespace GarmentRecordSystem
         
         private void AddNewGarment(object sender, RoutedEventArgs e)
         {
-            var addWindow = new GarmentEditorWindow();
-            addWindow.ShowDialog();
+            var addWindow = new GarmentEditorWindow(_garmentService);
+            if (addWindow.ShowDialog() == true)
+            {
+                Garments.Clear();
+                foreach (var garment in _garmentService.GetAll())
+                {
+                    Garments.Add(garment);
+                }
+            }
+            MessageBox.Show("Item successfully added.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        
+        private void UpdateGarment(object sender, RoutedEventArgs e)
+        {
+            var garmentId = (int)((Button)sender).CommandParameter;
+            var addWindow = new GarmentEditorWindow(_garmentService, garmentId);
+            if (addWindow.ShowDialog() == true)
+            {
+                Garments.Clear();
+                foreach (var garment in _garmentService.GetAll())
+                {
+                    Garments.Add(garment);
+                }
+                MessageBox.Show("Item successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

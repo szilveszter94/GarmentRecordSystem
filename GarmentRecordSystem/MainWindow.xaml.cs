@@ -59,6 +59,31 @@ namespace GarmentRecordSystem
             }
         }
         
+        private void LoadGarments(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
+            bool? result = openFileDialog.ShowDialog();
+            
+            if (result == true)
+            {
+                string newFilePath = openFileDialog.FileName;
+                var newGarmentRepository = new GarmentRepository(newFilePath);
+                _garmentService = new GarmentService(newGarmentRepository);
+                
+                Garments.Clear();
+                foreach (var garment in _garmentService.GetAll())
+                {
+                    Garments.Add(garment);
+                }
+                
+                _filePath = newFilePath;
+                MessageBox.Show("Items loaded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        
         private void AddNewGarment(object sender, RoutedEventArgs e)
         {
             var addWindow = new GarmentEditorWindow(_garmentService);

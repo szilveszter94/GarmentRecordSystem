@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GarmentRecordSystem" Height="450" Width="1000">
+        Title="GarmentRecordSystem" Height="650" Width="1000" ResizeMode="NoResize">
     <Grid>
         <!-- Define rows for header, content, and footer -->
         <Grid.RowDefinitions>
@@ -18,7 +18,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Click="AddNewGarment" Width="70" Height="30" Margin="10">Add</Button>
                 <Button Click="SaveGarments" Width="70" Height="30" Margin="10">Save</Button>
-                <Button Width="70" Height="30" Margin="10">Load</Button>
+                <Button Click="LoadGarments" Width="70" Height="30" Margin="10">Load</Button>
                 <Grid>
                     <TextBox  Width="250" Height="30" FontSize="18"  VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="SearchGarments" x:Name="SearchTermTextBox" Margin="5"/>
                     <TextBlock IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">

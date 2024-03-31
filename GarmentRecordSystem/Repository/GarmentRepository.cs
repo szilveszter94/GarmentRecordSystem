@@ -9,37 +9,27 @@ namespace GarmentRecordSystem.Repository;
 
 public class GarmentRepository : IGarmentRepository
 {
-    private readonly string _filePath;
-    private int NextId { get; set; }
+    private string _filePath;
+    private List<GarmentModel>? _garments;
+    public int NextId { get; set; }
     
     public GarmentRepository(string filePath)
     {
+        _garments = new List<GarmentModel>();
         _filePath = filePath;
         if (!File.Exists(_filePath) || new FileInfo(_filePath).Length == 0)
         {
             NextId = 1;
             return;
         }
-        string json = File.ReadAllText(_filePath);
-        var jsonObject = JsonConvert.DeserializeObject<dynamic>(json);
-        List<GarmentModel> garments = JsonConvert.DeserializeObject<List<GarmentModel>>(jsonObject.garments.ToString());
-        NextId = garments.Count > 0 ? garments.Max(g => g.GarmentId) + 1 : 1;
+        InitializeRepository();
     }
     
     public IEnumerable<GarmentModel> GetAllGarments()
     {
         try
         {
-            if (!File.Exists(_filePath) || new FileInfo(_filePath).Length == 0)
-            {
-                return new List<GarmentModel>();
-            }
-            
-            string json = File.ReadAllText(_filePath);
-            var jsonObject = JsonConvert.DeserializeObject<dynamic>(json);
-            var garments = JsonConvert.DeserializeObject<List<GarmentModel>>(jsonObject.garments.ToString());
-        
-            return garments;
+            return _garments;
         }
         catch (Exception ex)
         {
@@ -51,8 +41,7 @@ public class GarmentRepository : IGarmentRepository
     {
         try
         {
-            var garments = GetAllGarments();
-            var selectedGarment = garments.FirstOrDefault(garment => garment.GarmentId == garmentId);
+            var selectedGarment = _garments.FirstOrDefault(garment => garment.GarmentId == garmentId);
             if (selectedGarment != null)
             {
                 return selectedGarment;
@@ -62,7 +51,7 @@ public class GarmentRepository : IGarmentRepository
         }
         catch (KeyNotFoundException e)
         {
-            throw new Exception("Garment not found.");
+            throw new KeyNotFoundException("Garment not found.");
         }
         catch (Exception e)
         {
@@ -76,7 +65,7 @@ public class GarmentRepository : IGarmentRepository
         try
         {
             garment.GarmentId = NextId++;
-            SaveGarment(garment);
+            _garments.Add(garment);
             return garment;
         }
         catch (Exception e)
@@ -90,10 +79,7 @@ public class GarmentRepository : IGarmentRepository
     {
         try
         {
-            // Load all garments from the file
-            var garments = GetAllGarments().ToList();
-            
-            var existingGarment = garments.FirstOrDefault(g => g.GarmentId == updatedGarment.GarmentId);
+            var existingGarment = _garments.FirstOrDefault(g => g.GarmentId == updatedGarment.GarmentId);
 
             if (existingGarment != null)
             {
@@ -101,13 +87,9 @@ public class GarmentRepository : IGarmentRepository
                 existingGarment.PurchaseDate = updatedGarment.PurchaseDate;
                 existingGarment.Color = updatedGarment.Color;
                 existingGarment.Size = updatedGarment.Size;
-                
-                SaveGarments(garments);
 
-                Console.WriteLine($"Garment with ID {updatedGarment.GarmentId} updated successfully.");
                 return existingGarment;
             }
-            else
             {
                 throw new KeyNotFoundException($"Garment with ID {updatedGarment.GarmentId} not found.");
             }
@@ -121,10 +103,22 @@ public class GarmentRepository : IGarmentRepository
             throw new Exception("An error occurred while updating the garment.", ex);
         }
     }
-    
-    public void SaveGarments(List<GarmentModel> garments, string? path = null)
+
+    public bool LoadGarmentsAndSetNewFilePath(string filePath)
     {
-        string json = JsonConvert.SerializeObject(new { garments = garments }, Formatting.Indented);
+        var result = InitializeRepository(filePath);
+        if (result)
+        {
+            _filePath = filePath;
+            return true;
+        }
+
+        return false;
+    }
+    
+    public void SaveGarments(string? path = null)
+    {
+        string json = JsonConvert.SerializeObject(new { garments = _garments }, Formatting.Indented);
 
         try
         {
@@ -145,14 +139,11 @@ public class GarmentRepository : IGarmentRepository
     {
         try
         {
-            var garments = GetAllGarments().ToList();
-            var garmentToRemove = garments.FirstOrDefault(garment => garment.GarmentId == garmentId);
+            var garmentToRemove = _garments.FirstOrDefault(garment => garment.GarmentId == garmentId);
 
             if (garmentToRemove != null)
             {
-                garments.Remove(garmentToRemove);
-                SaveGarments(garments);
-
+                _garments.Remove(garmentToRemove);
                 Console.WriteLine($"Garment with ID {garmentId} deleted successfully.");
             }
             else
@@ -169,21 +160,24 @@ public class GarmentRepository : IGarmentRepository
             throw new Exception("An error occurred while deleting the garment.", ex);
         }
     }
-    
-    private void SaveGarment(GarmentModel garment)
-    {
-        List<GarmentModel> existingGarments = GetAllGarments().ToList();
-        existingGarments.Add(garment);
-        
-        string json = JsonConvert.SerializeObject(new { garments = existingGarments }, Formatting.Indented);
 
+    private bool InitializeRepository(string? insertedFilePath = null)
+    {
+        var filePath = insertedFilePath ?? _filePath;
         try
         {
-            File.WriteAllText(_filePath, json);
+            string json = File.ReadAllText(filePath);
+            var jsonObject = JsonConvert.DeserializeObject<dynamic>(json);
+            List<GarmentModel> garments =
+                JsonConvert.DeserializeObject<List<GarmentModel>>(jsonObject.garments.ToString());
+            NextId = garments.Count > 0 ? garments.Max(g => g.GarmentId) + 1 : 1;
+            _garments = garments;
+            return true;
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            throw new Exception("Failed to save garments to file.", ex);
+            Console.WriteLine("Failed to load the file.");
+            return false;
         }
     }
 }

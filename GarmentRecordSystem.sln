@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarmentRecordSystem", "GarmentRecordSystem\GarmentRecordSystem.csproj", "{EBAF2E99-AC8B-49C2-AF70-0975F1376186}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarmentRecordSystemTest", "GarmentRecordSystemTest\GarmentRecordSystemTest.csproj", "{FECF438F-0F87-4511-A5D1-96C0172FB51A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{EBAF2E99-AC8B-49C2-AF70-0975F1376186}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBAF2E99-AC8B-49C2-AF70-0975F1376186}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBAF2E99-AC8B-49C2-AF70-0975F1376186}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FECF438F-0F87-4511-A5D1-96C0172FB51A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECF438F-0F87-4511-A5D1-96C0172FB51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECF438F-0F87-4511-A5D1-96C0172FB51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECF438F-0F87-4511-A5D1-96C0172FB51A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

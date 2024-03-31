@@ -70,17 +70,22 @@ namespace GarmentRecordSystem
             if (result == true)
             {
                 string newFilePath = openFileDialog.FileName;
-                var newGarmentRepository = new GarmentRepository(newFilePath);
-                _garmentService = new GarmentService(newGarmentRepository);
-                
-                Garments.Clear();
-                foreach (var garment in _garmentService.GetAll())
+                var isValid = _garmentService.SetNewFilePathAndLoad(newFilePath);
+                if (!isValid)
                 {
-                    Garments.Add(garment);
+                    MessageBox.Show($"Failed to load garments. Invalid file format.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Items loaded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Garments.Clear();
+                    foreach (var garment in _garmentService.GetAll())
+                    {
+                        Garments.Add(garment);
+                    }
+                    _filePath = newFilePath;
                 }
                 
-                _filePath = newFilePath;
-                MessageBox.Show("Items loaded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         
@@ -94,8 +99,8 @@ namespace GarmentRecordSystem
                 {
                     Garments.Add(garment);
                 }
+                MessageBox.Show("Item successfully added.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            MessageBox.Show("Item successfully added.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
         private void UpdateGarment(object sender, RoutedEventArgs e)

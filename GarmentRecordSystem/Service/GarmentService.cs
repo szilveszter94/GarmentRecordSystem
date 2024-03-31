@@ -16,6 +16,11 @@ public class GarmentService : IGarmentService
         _garmentRepository = garmentRepository;
     }
 
+    public bool SetNewFilePathAndLoad(string filePath)
+    {
+        return _garmentRepository.LoadGarmentsAndSetNewFilePath(filePath);
+    }
+
     public GarmentModel SearchGarment(int garmentId)
     {
         try
@@ -59,8 +64,7 @@ public class GarmentService : IGarmentService
     {
         try
         {
-            var garments = _garmentRepository.GetAllGarments().ToList();
-            _garmentRepository.SaveGarments(garments, path);
+            _garmentRepository.SaveGarments(path);
         }
         catch (Exception e)
         {

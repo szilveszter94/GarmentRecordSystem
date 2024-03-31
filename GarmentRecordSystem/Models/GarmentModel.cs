@@ -15,4 +15,21 @@ public class GarmentModel
     {
         return $"Id: {GarmentId}, Brand: {BrandName}, Purchased: {PurchaseDate}, Color: {Color}, Size: {Size}";
     }
+    
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+        
+        GarmentModel other = (GarmentModel)obj;
+
+        return GarmentId == other.GarmentId &&
+               BrandName == other.BrandName &&
+               PurchaseDate.Date == other.PurchaseDate.Date &&
+               Color == other.Color &&
+               Size == other.Size;
+    }
+    
 }

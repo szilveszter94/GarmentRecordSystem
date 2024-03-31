@@ -6,6 +6,7 @@ namespace GarmentRecordSystem.Service;
 public interface IGarmentService
 {
     GarmentModel SearchGarment(int garmentId);
+    public bool SetNewFilePathAndLoad(string filePath);
     List<GarmentModel> SortGarments(string sortBy);
     void SaveGarment(string path);
     GarmentModel GetGarmentById(int garmentId);

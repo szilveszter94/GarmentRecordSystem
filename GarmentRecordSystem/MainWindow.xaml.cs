@@ -93,7 +93,7 @@ namespace GarmentRecordSystem
             {
                 string filePath = saveFileDialog.FileName;
                 _garmentService.SaveGarment(filePath);
-                MessageBox.Show($"Items successfully saved to the location {filePath}.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Garments successfully saved to the location {filePath}.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         
@@ -115,12 +115,8 @@ namespace GarmentRecordSystem
                 }
                 else
                 {
-                    MessageBox.Show("Items loaded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Garments.Clear();
-                    foreach (var garment in _garmentService.GetAll())
-                    {
-                        Garments.Add(garment);
-                    }
+                    MessageBox.Show("Garments loaded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    RefreshGarmentList(_garmentService.GetAll());
                     _filePath = newFilePath;
                     IsSaveEnabled = "False";
                 }
@@ -133,12 +129,8 @@ namespace GarmentRecordSystem
             var addWindow = new GarmentEditorWindow(_garmentService);
             if (addWindow.ShowDialog() == true)
             {
-                Garments.Clear();
-                foreach (var garment in _garmentService.GetAll())
-                {
-                    Garments.Add(garment);
-                }
-                MessageBox.Show("Item successfully added.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                RefreshGarmentList(_garmentService.GetAll());
+                MessageBox.Show("Garment successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 CheckAutoSave();
             }
         }
@@ -149,12 +141,8 @@ namespace GarmentRecordSystem
             var addWindow = new GarmentEditorWindow(_garmentService, garmentId);
             if (addWindow.ShowDialog() == true)
             {
-                Garments.Clear();
-                foreach (var garment in _garmentService.GetAll())
-                {
-                    Garments.Add(garment);
-                }
-                MessageBox.Show("Item successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                RefreshGarmentList(_garmentService.GetAll());
+                MessageBox.Show("Garment successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 CheckAutoSave();
             }
         }
@@ -163,7 +151,6 @@ namespace GarmentRecordSystem
         {
             string searchText = SearchTermTextBox.Text.ToLower();
             Int32.TryParse(searchText, out int number);
-            Garments.Clear();
             var filteredGarments = new List<GarmentModel>();
             foreach (var garment in _garmentService.GetAll())
             {
@@ -172,10 +159,7 @@ namespace GarmentRecordSystem
                     filteredGarments.Add(garment);
                 }
             }
-            foreach (var garment in filteredGarments)
-            {
-                Garments.Add(garment);
-            }
+            RefreshGarmentList(filteredGarments);
         }
 
         private void SortGarments(object sender, RoutedEventArgs e)
@@ -183,8 +167,6 @@ namespace GarmentRecordSystem
             var key = (string)((TextBlock)sender).Tag;
             bool isAscending = !sortFlags[key];
             sortFlags[key] = isAscending;
-
-            Garments.Clear();
             IEnumerable<GarmentModel> sortedGarments;
 
             switch (key)
@@ -213,15 +195,12 @@ namespace GarmentRecordSystem
                 sortedGarments = sortedGarments.Reverse();
             }
 
-            foreach (var garment in sortedGarments)
-            {
-                Garments.Add(garment);
-            }
+            RefreshGarmentList(sortedGarments);
         }
 
         private void DeleteGarment(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this garment?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 var garmentId = (int)((Button)sender).CommandParameter;
@@ -250,6 +229,15 @@ namespace GarmentRecordSystem
             else
             {
                 IsSaveEnabled = "True";
+            }
+        }
+
+        void RefreshGarmentList(IEnumerable<GarmentModel> updatedList)
+        {
+            Garments.Clear();
+            foreach (var garment in updatedList)
+            {
+                Garments.Add(garment);
             }
         }
     }

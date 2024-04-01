@@ -15,26 +15,33 @@
 
         <!-- Header -->
         <Border BorderBrush="Gray" BorderThickness="0 0 0 1" Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
-                <Button Click="AddNewGarment" Width="70" Height="30" Margin="10">Add</Button>
-                <Button Click="SaveGarments" Width="70" Height="30" Margin="10">Save</Button>
-                <Button Click="LoadGarments" Width="70" Height="30" Margin="10">Load</Button>
-                <Grid>
-                    <TextBox  Width="250" Height="30" FontSize="18"  VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="SearchGarments" x:Name="SearchTermTextBox" Margin="5"/>
-                    <TextBlock IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-            </StackPanel>
+            <Grid Margin="10 0 10 0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Click="AddNewGarment" Width="70" Height="30" Margin="10">New</Button>
+                    <Button Click="SaveGarments" IsEnabled="{Binding IsSaveEnabled}" Tag="Save" Width="70" Height="30" Margin="10">Save</Button>
+                    <Button Click="SaveGarments" Tag="Export" Width="70" Height="30" Margin="10">Export</Button>
+                    <Button Click="LoadGarments" Width="70" Height="30" Margin="10">Load</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Grid>
+                        <TextBox  Width="250" Height="30" FontSize="18"  VerticalAlignment="Center" HorizontalAlignment="Right" TextChanged="SearchGarments" x:Name="SearchTermTextBox" Margin="5"/>
+                        <TextBlock IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <CheckBox IsChecked="{Binding IsAutoSaveEnabled, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Right">Auto Save</CheckBox>
+                </StackPanel>
+            </Grid>
+            
         </Border>
 
         <!-- Content -->

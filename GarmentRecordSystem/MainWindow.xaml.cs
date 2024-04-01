@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using GarmentRecordSystem.Models;
@@ -15,10 +17,39 @@ namespace GarmentRecordSystem
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public ObservableCollection<GarmentModel> Garments { get; set; }
-        private IGarmentService _garmentService;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private string _isSaveEnabled = "False";
+        public string IsSaveEnabled
+        {
+            get => _isSaveEnabled;
+            set  
+            {  
+                if (value != _isSaveEnabled)  
+                {  
+                    _isSaveEnabled = value;  
+                    OnPropertyChanged();
+                }  
+            }  
+        }
+        private bool _isAutoSaveEnabled;
+
+        public bool IsAutoSaveEnabled
+        {
+            get => _isAutoSaveEnabled;
+            set
+            {
+                if (_isAutoSaveEnabled != value)
+                {
+                    _isAutoSaveEnabled = value;
+                    CheckAutoSave();
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private readonly IGarmentService _garmentService;
         private string _filePath;
         private Dictionary<string, bool> sortFlags = new Dictionary<string, bool>
         {
@@ -43,6 +74,13 @@ namespace GarmentRecordSystem
         
         private void SaveGarments(object sender, RoutedEventArgs e)
         {
+            var key = (string)((Button)sender).Tag;
+            if (key == "Save")
+            {
+                _garmentService.SaveGarment(_filePath);
+                IsSaveEnabled = "False";
+                return;
+            }
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
             
             saveFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
@@ -84,6 +122,7 @@ namespace GarmentRecordSystem
                         Garments.Add(garment);
                     }
                     _filePath = newFilePath;
+                    IsSaveEnabled = "False";
                 }
                 
             }
@@ -100,6 +139,7 @@ namespace GarmentRecordSystem
                     Garments.Add(garment);
                 }
                 MessageBox.Show("Item successfully added.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                CheckAutoSave();
             }
         }
         
@@ -115,6 +155,7 @@ namespace GarmentRecordSystem
                     Garments.Add(garment);
                 }
                 MessageBox.Show("Item successfully updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                CheckAutoSave();
             }
         }
         
@@ -126,7 +167,7 @@ namespace GarmentRecordSystem
             var filteredGarments = new List<GarmentModel>();
             foreach (var garment in _garmentService.GetAll())
             {
-                if (garment.BrandName.ToLower().Contains(searchText) || garment.Color.ToLower().Contains(searchText) || garment.GarmentId == number)
+                if (garment.BrandName.ToLower().Contains(searchText) || garment.Color.ToLower().Contains(searchText) || garment.GarmentId.ToString().Contains(number.ToString()) )
                 {
                     filteredGarments.Add(garment);
                 }
@@ -161,7 +202,6 @@ namespace GarmentRecordSystem
                     sortedGarments = _garmentService.GetAll().OrderBy(g => g.Size);
                     break;
                 case "PurchaseDate":
-                    Console.WriteLine("ok");
                     sortedGarments = _garmentService.GetAll().OrderBy(g => g.PurchaseDate);
                     break;
                 default:
@@ -190,7 +230,26 @@ namespace GarmentRecordSystem
                 if (garmentToRemove != null)
                 {
                     Garments.Remove(garmentToRemove);
+                    CheckAutoSave();
                 }
+            }
+        }
+        
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        void CheckAutoSave()
+        {
+            if (IsAutoSaveEnabled)
+            {
+                IsSaveEnabled = "False";
+                _garmentService.SaveGarment(_filePath);
+            }
+            else
+            {
+                IsSaveEnabled = "True";
             }
         }
     }

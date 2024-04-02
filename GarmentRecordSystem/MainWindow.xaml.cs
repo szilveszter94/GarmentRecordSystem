@@ -51,6 +51,18 @@ namespace GarmentRecordSystem
         }
         private readonly IGarmentService _garmentService;
         private string _filePath;
+        public string FilePath
+        {
+            get => _filePath;
+            set  
+            {  
+                if (value != _filePath)  
+                {  
+                    _filePath = value;  
+                    OnPropertyChanged();
+                }  
+            }  
+        }
         private Dictionary<string, bool> sortFlags = new Dictionary<string, bool>
         {
             { "GarmentId", false },
@@ -63,7 +75,7 @@ namespace GarmentRecordSystem
         {
             var location = AppDomain.CurrentDomain.BaseDirectory;
             var filePath = Path.Combine(location, "database.json");
-            _filePath = filePath;
+            FilePath = filePath;
             var garmentRepository = new GarmentRepository(filePath);
             var garmentService = new GarmentService(garmentRepository);
             _garmentService = garmentService;
@@ -71,16 +83,15 @@ namespace GarmentRecordSystem
             DataContext = this;
             InitializeComponent();
         }
-        
+
         private void SaveGarments(object sender, RoutedEventArgs e)
         {
-            var key = (string)((Button)sender).Tag;
-            if (key == "Save")
-            {
-                _garmentService.SaveGarment(_filePath);
-                IsSaveEnabled = "False";
-                return;
-            }
+            _garmentService.SaveGarment(FilePath);
+            IsSaveEnabled = "False";
+        }
+        
+        private void ExportGarments(object sender, RoutedEventArgs e)
+        {
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
             
             saveFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
@@ -117,7 +128,7 @@ namespace GarmentRecordSystem
                 {
                     MessageBox.Show("Garments loaded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     RefreshGarmentList(_garmentService.GetAll());
-                    _filePath = newFilePath;
+                    FilePath = newFilePath;
                     IsSaveEnabled = "False";
                 }
                 
@@ -224,7 +235,7 @@ namespace GarmentRecordSystem
             if (IsAutoSaveEnabled)
             {
                 IsSaveEnabled = "False";
-                _garmentService.SaveGarment(_filePath);
+                _garmentService.SaveGarment(FilePath);
             }
             else
             {

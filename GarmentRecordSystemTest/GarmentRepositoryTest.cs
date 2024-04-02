@@ -142,7 +142,7 @@ public class GarmentRepositoryTest
         };
         var garment2 = new GarmentModel
         {
-            BrandName = "Nike", PurchaseDate = new DateTime(2023, 01, 01), Size = SizeEnum.Xxxl,
+            BrandName = "Nike", PurchaseDate = new DateTime(2023, 01, 01), Size = SizeEnum.XXXL,
             Color = "Yellow"
         };
         repository.AddGarment(garment1);

@@ -2,11 +2,11 @@ namespace GarmentRecordSystem.Models.Enums;
 
 public enum SizeEnum
 {
-    Xs,
+    XS,
     S,
     M,
     L,
-    Xl,
-    Xxl,
-    Xxxl
+    XL,
+    XXL,
+    XXXL
 }

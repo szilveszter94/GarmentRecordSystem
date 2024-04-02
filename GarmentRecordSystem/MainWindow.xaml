@@ -18,8 +18,8 @@
             <Grid Margin="10 0 10 0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Click="AddNewGarment" Width="70" Height="30" Margin="10">New</Button>
-                    <Button Click="SaveGarments" IsEnabled="{Binding IsSaveEnabled}" Tag="Save" Width="70" Height="30" Margin="10">Save</Button>
-                    <Button Click="SaveGarments" Tag="Export" Width="70" Height="30" Margin="10">Export</Button>
+                    <Button Click="SaveGarments" IsEnabled="{Binding IsSaveEnabled}" Width="70" Height="30" Margin="10">Save</Button>
+                    <Button Click="ExportGarments" Width="70" Height="30" Margin="10">Export</Button>
                     <Button Click="LoadGarments" Width="70" Height="30" Margin="10">Load</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -126,7 +126,10 @@
 
         <!-- Footer -->
         <Border Grid.Row="2" Background="LightGray">
-            <TextBlock Text="Copyright © 2024 GarmentRecordSystem" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid Margin="15 0 15 0">
+                <TextBlock Text="{Binding FilePath }" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBlock Text="Copyright © 2024 GarmentRecordSystem" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
         </Border>
     </Grid>
 </Window>
